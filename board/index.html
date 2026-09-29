@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Are.na Board</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://www.gstatic.com/firebasejs/12.3.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/12.3.0/firebase-database-compat.js"></script>
+  <script src="firebase-config.js"></script>
+  <script src="store.js"></script>
+</head>
+<body>
+  <!-- start: paste a channel -->
+  <main id="start" hidden>
+    <h1>Are.na Board</h1>
+    <p>Paste the link of your <b>Are.na channel</b>. Every block becomes a tile you can move, rotate,
+       flip (its Are.na description is on the back) and group. Anyone with the board's link can
+       rearrange it with you, and new blocks you add on Are.na appear by themselves.</p>
+    <form id="start-form" class="row">
+      <input id="start-input" type="text" placeholder="https://www.are.na/your-name/your-channel" autofocus>
+      <button>Open board</button>
+    </form>
+    <p class="note">The channel must be <b>open</b> or <b>closed</b> (public), not private.</p>
+  </main>
+
+  <!-- the board -->
+  <header id="bar" hidden>
+    <a id="home" href="./" title="Open another channel">✳ Are.na Board</a>
+    <a id="channel-link" target="_blank" title="Open the channel on Are.na"></a>
+    <span id="people"></span>
+    <span class="sep"></span>
+    <button id="cluster-btn" title="Group the selected tiles (G)">Cluster</button>
+    <button id="frame-btn" title="Add an empty cluster frame">+ Frame</button>
+    <button id="undo-btn" title="Undo your last change (Cmd/Ctrl+Z)">Undo</button>
+    <button id="tidy-btn" title="Put all tiles back in a grid">Tidy up</button>
+    <button id="removed-btn" title="Bring back removed tiles">Removed (0)</button>
+    <span class="sep"></span>
+    <button id="fit-btn" title="See everything (0)">Fit</button>
+    <button id="zoomout-btn" title="Zoom out (−)">−</button>
+    <button id="zoomin-btn" title="Zoom in (+)">+</button>
+    <span class="sep"></span>
+    <button id="copy-btn" title="Copy this board's link to share it">Copy link</button>
+    <button id="help-btn">?</button>
+  </header>
+  <div id="local-note" hidden>Saved in this browser only: set up Firebase to share the board (see board/README.md).</div>
+
+  <div id="board" hidden>
+    <div id="world"></div>
+    <div id="marquee" hidden></div>
+  </div>
+
+  <div id="status" hidden></div>
+
+  <aside id="help" hidden>
+    <h2>How to use</h2>
+    <dl>
+      <dt>Drag a tile</dt><dd>move it (and every selected tile)</dd>
+      <dt>Double-click</dt><dd>flip it: its Are.na description is on the back</dd>
+      <dt>⟳ top handle</dt><dd>rotate (hold Shift to snap)</dd>
+      <dt>✥ bottom-left</dt><dd>tilt in 3D (or Alt/Option + drag)</dd>
+      <dt>◢ bottom-right</dt><dd>resize</dd>
+      <dt>Shift + click</dt><dd>add to the selection</dd>
+      <dt>Shift + drag</dt><dd>select an area</dd>
+      <dt>Drag the background</dt><dd>move around</dd>
+      <dt>Pinch / Ctrl + scroll</dt><dd>zoom</dd>
+      <dt>G</dt><dd>group the selected tiles into a cluster</dd>
+      <dt>Cluster title bar</dt><dd>drag it to move the whole cluster; double-click to rename</dd>
+      <dt>F · R · Delete</dt><dd>flip · straighten · remove from the board</dd>
+      <dt>Cmd/Ctrl + Z</dt><dd>undo your last change</dd>
+    </dl>
+    <p class="note">Everyone with this board's link can change it, live. New blocks you add to the
+       channel on Are.na appear here within half a minute.</p>
+    <button id="help-close">Close</button>
+  </aside>
+
+  <script src="board.js"></script>
+</body>
+</html>
