@@ -33,7 +33,7 @@ If you know Git, you can `git clone` it instead.
 ## 3. Open it in VS Code
 
 1. Open VS Code → **File → Open Folder…** → choose the folder you unzipped
-   (it's called `internet-architecture-main` if you downloaded the ZIP). If VS Code asks
+   (it's called `HS26_Internet-Architecture-main` if you downloaded the ZIP). If VS Code asks
    "Do you trust the authors of the files in this folder?", click **Yes, I trust the authors**.
 2. Open the terminal inside VS Code: **Terminal → New Terminal** (or press `` Ctrl+` ``).
    A panel opens at the bottom. That's where you type commands. The line where you type
@@ -132,7 +132,7 @@ Each exercise has its own README with the steps explained:
 ## What's in this project
 
 ```
-internet-architecture/
+HS26_Internet-Architecture/
 ├── README.md            ← you are here
 ├── package.json         ← the list of libraries that "npm install" downloads
 ├── google-key.txt       ← your Google key (you create it; never uploaded)
@@ -150,7 +150,7 @@ number (`tiles.js`, `streetview.js`, `camera.js`) hold the technical details.
 ## Prefer clicking? The web version
 
 The same three exercises also exist as web pages. Open
-**https://luciarebolino.github.io/internet-architecture/web/** in **Google Chrome** and follow
+**https://luciarebolino.github.io/HS26_Internet-Architecture/web/** in **Google Chrome** and follow
 the buttons: nothing to install, and results go to your Downloads folder. (They're also in the
 [`web/`](web/) folder: double-click `web/index.html`.)
 
