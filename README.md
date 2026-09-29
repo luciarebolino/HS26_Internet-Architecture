@@ -13,10 +13,6 @@ Three small experiments in collecting images from the internet, all around the
 | 2 | [**StreetTrack**](2-StreetTrack/) | Street View photos of the streets around the Schlachthof, searched by an AI model for trucks | a zoomed-in photo of every truck (JPG) + a table of where and when | [James Bridle](https://jamesbridle.com/works/every-cctv-camera-cc), *Every CCTV Camera (CC)* |
 | 3 | [**Zoooom**](3-Zoooom/) | a tourism webcam's hidden archive: years of photos, zooming from the whole city into one block | a video (MP4) + all its frames (JPG) | [Sam Lavigne](https://lav.io/projects/the-zooms/), *The Zooms* |
 
-To collect and rearrange what you find, there is also a shared **[Are.na Board](board/)**:
-paste your Are.na channel's link, and everyone in your group can rearrange its blocks together,
-live, at https://luciarebolino.github.io/HS26_Internet-Architecture/board/
-
 You don't need to know how to code. Each exercise is a short series of steps: you
 type one command in the terminal, it does one thing, saves the result in a folder
 and tells you what to do next.
