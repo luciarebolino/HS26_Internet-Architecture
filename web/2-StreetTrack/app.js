@@ -1,11 +1,12 @@
-// StreetTrack — find trucks in Google Street View around an area.
+// StreetTrack — find trucks (or anything else the model knows) in Google Street View around an area.
 // Everything happens in this browser tab; nothing is installed.
 
 const SV = "https://maps.googleapis.com/maps/api/streetview";
 const SIZE = 640;                       // Street View gives at most 640 x 640 pixels
 let panoramas = [];                     // { id, lat, lng, date }
 let photos = [];                        // { pano, heading, blob }
-let trucks = [];                        // { pano, heading, score, zoomBlob, foundBlob, ... }
+let found = [];                         // { what, pano, heading, score, zoomBlob, foundBlob, ... }
+let lookingFor = "truck";
 
 // ---------- STEP 1: find the panoramas ----------
 // The "metadata" request is free: it tells us where the nearest panorama is.
@@ -65,7 +66,7 @@ onClick("b2", "st2", async () => {
   stepDone("s2", "b3");
 });
 
-// ---------- STEP 3: find trucks, then zoom in on each ----------
+// ---------- STEP 3: find what you chose, then zoom in on each ----------
 
 // Where in the panorama is a point of the photo? A photo with a 90° view is
 // 640 px wide, so the camera's "focal length" is 320 px. With a bit of
@@ -75,8 +76,10 @@ function aimAt(photo, [x, y, w, h]) {
   const dx = x + w / 2 - SIZE / 2, dy = y + h / 2 - SIZE / 2;
   const heading = (photo.heading + (Math.atan2(dx, focal) * 180) / Math.PI + 360) % 360;
   const pitch = (-Math.atan2(dy, Math.hypot(focal, dx)) * 180) / Math.PI;
-  const width = (2 * Math.atan2(w / 2, focal) * 180) / Math.PI;       // how wide the truck looks, in degrees
-  const fov = Math.max(10, Math.min(60, width * 1.4));                 // zoom so the truck fills the photo
+  const width = (2 * Math.atan2(w / 2, focal) * 180) / Math.PI;       // how wide it looks, in degrees
+  const height = (2 * Math.atan2(h / 2, focal) * 180) / Math.PI;      // how tall it looks, in degrees
+  // the zoomed photo is 640 x 480: tall things (people) need a wider view than their width suggests
+  const fov = Math.max(10, Math.min(60, Math.max(width, height * 4 / 3) * 1.4)); // so it fills the photo
   return { heading, pitch, fov };
 }
 
@@ -84,52 +87,54 @@ onClick("b3", "st3", async () => {
   status("st3", "Loading the AI model (about 20 MB, only the first time)...");
   const model = await cocoSsd.load({ base: "mobilenet_v2" });
   const minScore = Number($("#minScore").value);
-  trucks = [];
+  found = [];
+  lookingFor = $("#lookFor").value;
   $("#g3").innerHTML = "";
   for (const [i, photo] of photos.entries()) {
     const img = await createImageBitmap(photo.blob);
-    const found = (await model.detect(img, 20, minScore))
-      .filter((d) => d.class === "truck" && d.bbox[2] >= 30)              // trucks, not too tiny
+    const keep = (await model.detect(img, 20, minScore))
+      .filter((d) => d.class === lookingFor)                              // only what you chose
+      .filter((d) => d.bbox[2] >= 20 && d.bbox[3] >= 20)                  // not too tiny
       .filter((d) => !(d.bbox[1] + d.bbox[3] > SIZE - 10 && d.bbox[2] > SIZE * 0.6)); // not the photographer's own car roof
-    for (const d of found) {
+    for (const d of keep) {
       const aim = aimAt(photo, d.bbox);
       const zoom = await fetch(photoUrl(photo.pano.id, aim.heading.toFixed(1), aim.fov.toFixed(1), aim.pitch.toFixed(1), 640, 480));
       if (!zoom.ok) continue;
       const zoomBlob = await zoom.blob();
-      // the original photo with the truck marked in red
+      // the original photo with the find marked in red
       const canvas = document.createElement("canvas");
       canvas.width = canvas.height = SIZE;
       const ctx = canvas.getContext("2d");
       ctx.drawImage(img, 0, 0);
       ctx.strokeStyle = "#e61e28"; ctx.lineWidth = 4;
       ctx.strokeRect(...d.bbox);
-      const truck = { ...aim, pano: photo.pano, score: d.score, zoomBlob, foundBlob: await canvasToJpg(canvas) };
-      trucks.push(truck);
+      found.push({ ...aim, what: d.class, pano: photo.pano, score: d.score, zoomBlob, foundBlob: await canvasToJpg(canvas) });
       const fig = document.createElement("figure");
       fig.innerHTML = `<img src="${URL.createObjectURL(zoomBlob)}"><figcaption>${Math.round(d.score * 100)}% · ${photo.pano.date} · ${photo.pano.lat.toFixed(5)}, ${photo.pano.lng.toFixed(5)}</figcaption>`;
       $("#g3").appendChild(fig);
     }
     progress("p3", (i + 1) / photos.length);
-    status("st3", `Checked ${i + 1} / ${photos.length} photos, ${trucks.length} trucks so far`);
+    status("st3", `Checked ${i + 1} / ${photos.length} photos, ${found.length} × ${lookingFor} so far`);
   }
-  status("st3", `Found ${trucks.length} trucks in ${photos.length} photos. Go to step 4.`);
+  status("st3", `Found ${found.length} × ${lookingFor} in ${photos.length} photos. Go to step 4.`);
   stepDone("s3", "b4");
 });
 
 // ---------- STEP 4: save ----------
 
 onClick("b4", "st4", async () => {
+  const label = lookingFor.replace(/ /g, "-");                           // e.g. "truck", "traffic-light"
   const files = [];
-  const rows = ["file,date,lat,lng,heading,pitch,zoom_fov,confidence,google_maps"];
-  trucks.forEach((t, i) => {
-    const name = `${String(i + 1).padStart(3, "0")}_${t.pano.date}_${t.pano.lat.toFixed(5)}_${t.pano.lng.toFixed(5)}`;
+  const rows = ["file,what,date,lat,lng,heading,pitch,zoom_fov,confidence,google_maps"];
+  found.forEach((t, i) => {
+    const name = `${String(i + 1).padStart(3, "0")}_${label}_${t.pano.date}_${t.pano.lat.toFixed(5)}_${t.pano.lng.toFixed(5)}`;
     files.push({ name: `zoom/${name}.jpg`, data: t.zoomBlob });
     files.push({ name: `found/${name}.jpg`, data: t.foundBlob });
     const link = `https://www.google.com/maps/@?api=1&map_action=pano&pano=${t.pano.id}&heading=${t.heading.toFixed(0)}&pitch=${t.pitch.toFixed(0)}&fov=${t.fov.toFixed(0)}`;
-    rows.push([`${name}.jpg`, t.pano.date, t.pano.lat, t.pano.lng, t.heading.toFixed(1), t.pitch.toFixed(1), t.fov.toFixed(1), t.score.toFixed(2), link].join(","));
+    rows.push([`${name}.jpg`, t.what, t.pano.date, t.pano.lat, t.pano.lng, t.heading.toFixed(1), t.pitch.toFixed(1), t.fov.toFixed(1), t.score.toFixed(2), link].join(","));
   });
-  files.push({ name: "trucks.csv", data: new Blob([rows.join("\n")], { type: "text/csv" }) });
-  await saveZip(files, "StreetTrack.zip", "st4");
-  status("st4", `Saved StreetTrack.zip with ${trucks.length} trucks. Look in your Downloads folder.`);
+  files.push({ name: `${label}.csv`, data: new Blob([rows.join("\n")], { type: "text/csv" }) });
+  await saveZip(files, `StreetTrack-${label}.zip`, "st4");
+  status("st4", `Saved StreetTrack-${label}.zip with ${found.length} × ${lookingFor}. Look in your Downloads folder.`);
   stepDone("s4");
 });

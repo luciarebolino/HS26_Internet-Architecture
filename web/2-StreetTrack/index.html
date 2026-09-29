@@ -15,8 +15,8 @@
   <h1>StreetTrack <small>exercise 2</small></h1>
   <p class="intro">
     Google's Street View car photographed every street around the Schlachthof. We collect those
-    photos, let a small AI model (running inside this page) look for <b>trucks</b>, and ask Street View
-    for a second photo zoomed in on every truck it finds. Do the steps in order.
+    photos, let a small AI model (running inside this page) look for <b>trucks</b> (or anything else you choose
+    in step 3), and ask Street View for a second photo zoomed in on everything it finds. Do the steps in order.
   </p>
   <p class="ref">After <a href="https://jamesbridle.com/works/every-cctv-camera-cc" target="_blank">James Bridle</a>, <i>Every CCTV Camera (CC)</i>:
     every CCTV camera on a walk around London's Congestion Charge Zone, from <i>The Nor</i>. Here the camera is Google's, and what we collect are the trucks.</p>
@@ -54,14 +54,17 @@
   </section>
 
   <section class="step" id="s3">
-    <h2><span class="n">3</span> Find the trucks and zoom in</h2>
-    <p>The model (COCO-SSD) knows 80 kinds of things, "truck" is one of them. For every truck it finds,
-       we ask Street View for a new photo pointed at the truck, with a narrow angle: a real zoom.</p>
+    <h2><span class="n">3</span> Find them and zoom in</h2>
+    <p>The AI model (COCO-SSD) was trained on thousands of labelled photos to recognise 80 kinds of things.
+       For every photo it lists what it sees, how sure it is, and a box around it. We keep only what you
+       choose below, and for each find we ask Street View for a new photo pointed at it, with a narrow
+       angle: a real zoom. You can run this step again with something else without downloading the photos again.</p>
     <div class="row">
       <label>How sure the model must be<select id="minScore">
         <option value="0.4">40%</option><option value="0.5" selected>50%</option><option value="0.7">70%</option>
       </select></label>
-      <button id="b3" disabled>Find trucks</button>
+      <label>Look for<select id="lookFor"><optgroup label="In the street"><option selected>truck</option><option>car</option><option>bus</option><option>person</option><option>bicycle</option><option>motorcycle</option><option>traffic light</option><option>stop sign</option><option>fire hydrant</option><option>parking meter</option><option>bench</option><option>dog</option><option>bird</option><option>umbrella</option><option>backpack</option><option>handbag</option><option>suitcase</option><option>potted plant</option></optgroup><optgroup label="Everything else the model knows"><option>airplane</option><option>train</option><option>boat</option><option>cat</option><option>horse</option><option>sheep</option><option>cow</option><option>elephant</option><option>bear</option><option>zebra</option><option>giraffe</option><option>tie</option><option>frisbee</option><option>skis</option><option>snowboard</option><option>sports ball</option><option>kite</option><option>baseball bat</option><option>baseball glove</option><option>skateboard</option><option>surfboard</option><option>tennis racket</option><option>bottle</option><option>wine glass</option><option>cup</option><option>fork</option><option>knife</option><option>spoon</option><option>bowl</option><option>banana</option><option>apple</option><option>sandwich</option><option>orange</option><option>broccoli</option><option>carrot</option><option>hot dog</option><option>pizza</option><option>donut</option><option>cake</option><option>chair</option><option>couch</option><option>bed</option><option>dining table</option><option>toilet</option><option>tv</option><option>laptop</option><option>mouse</option><option>remote</option><option>keyboard</option><option>cell phone</option><option>microwave</option><option>oven</option><option>toaster</option><option>sink</option><option>refrigerator</option><option>book</option><option>clock</option><option>vase</option><option>scissors</option><option>teddy bear</option><option>hair drier</option><option>toothbrush</option></optgroup></select></label>
+      <button id="b3" disabled>Find them</button>
     </div>
     <div class="bar" id="p3"><div></div></div>
     <div class="status" id="st3"></div>
@@ -69,9 +72,10 @@
   </section>
 
   <section class="step" id="s4">
-    <h2><span class="n">4</span> Save the trucks</h2>
+    <h2><span class="n">4</span> Save what you found</h2>
     <p>One <code>.zip</code> with <code>zoom/</code> (the close-ups), <code>found/</code> (the original photo
-       with the truck marked in red) and <code>trucks.csv</code> (date, place and direction of every truck).</p>
+       with each find marked in red) and a table named after what you looked for, e.g. <code>truck.csv</code>
+       (what, date, place and direction of every find).</p>
     <div class="row"><button id="b4" disabled>Save .zip</button></div>
     <div class="status" id="st4"></div>
   </section>
