@@ -174,3 +174,21 @@ the buttons: nothing to install, and results go to your Downloads folder. (They'
 
 The 3D tiles and Street View photos are © Google, the webcam photos © Zürich Tourismus / Roundshot.
 They are for this class exercise only: the `output` folders are never uploaded (see `.gitignore`).
+
+---
+
+## References
+
+- [Laura Kurgan](https://c4sr.columbia.edu/projects/plain-sight)
+- [CSR - Conflict Urbanism](https://centerforspatialresearch.github.io/conflict_urbanism_sp2023/2023/04/28/Those-Who-Live-and-Travel-in-the-Dark.html)
+- [Robert Pietrusko](https://www.warning-office.org/wo-test-sites)
+- [Sam Lavigne](https://lav.io/projects/street-views/)
+- [James Bridle](https://jamesbridle.com/works/every-cctv-camera-cc)
+- [Clement Valla](https://clementvalla.com/work/postcards-from-google-earth/)
+- [Dan Miller](https://dl.acm.org/doi/10.1145/3715668.3736392#:~:text=As%20we%20witness%20the%20unraveling,stored%20the%20files%20%5B9%5D.)
+- [Mario Santamaria](https://www.mariosantamaria.net/Emerald-black-latency/)
+- [Simon Weckert](https://www.simonweckert.com/googlemapshacks.html)
+- [Jenny Odell](https://www.jennyodell.com/satellite-landscapes.html)
+- [Josh Begley](https://joshbegley.com/)
+- [WTTDOTM](https://trafficcamphotobooth.com/animenyc.html)
+- [Tatu Gustaffsson](https://stanisland.com/2024/10/08/tatu-gustaffsson-cctv-project-finland/)
