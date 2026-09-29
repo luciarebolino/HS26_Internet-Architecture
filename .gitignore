@@ -1,0 +1,4 @@
+node_modules/
+output/
+google-key.txt
+.DS_Store

@@ -1,0 +1,83 @@
+/* Like the Google Docs editor: a white page on a grey desk, Arial,
+   plain headings, words highlighted in bright green and cyan. */
+:root {
+  --ink: #000;
+  --grey: #666;
+  --line: #ccc;
+  --green: #00ff00;
+  --cyan: #00ffff;
+  --link: rgb(0, 0, 255);
+  --red: rgb(255, 0, 47);
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html { background: #f0f2f5; }       /* the grey desk around the page */
+body {                              /* the page: US Letter, 1 inch margins */
+  margin: 40px auto;
+  width: 816px;
+  max-width: calc(100% - 32px);
+  min-height: 1056px;
+  padding: 96px;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(60, 64, 67, .15), 0 0 0 1px #dadce0;
+  color: var(--ink);
+  font: 11pt/1.5 Arial, Helvetica, sans-serif;
+}
+
+h1 { font-size: 26pt; font-weight: normal; margin: 0 0 6px; line-height: 1.15; }
+h1 small { font-size: 11pt; color: var(--grey); margin-left: 8px; }
+h2 { font-size: 20pt; font-weight: normal; margin: 28px 0 6px; line-height: 1.25; }
+h2 .n { background: var(--cyan); padding: 0 6px; margin-right: 4px; }
+p, ol, ul { margin: 0 0 10px; }
+li { margin-bottom: 4px; }
+a { color: var(--link); text-decoration: underline; }
+b { font-weight: bold; }
+mark, .hl { background: var(--green); color: var(--ink); padding: 0 2px; }
+code { font-family: "Courier New", monospace; font-size: 10.5pt; }
+.back { font-size: 10pt; margin: 0 0 18px; }
+.intro { margin-bottom: 10px; }
+.ref { color: var(--grey); font-size: 10pt; border-left: 3px solid var(--green); padding-left: 10px; margin: 10px 0 16px; }
+
+.step { margin: 0 0 8px; }
+.step.done h2 .n { background: var(--green); }
+.step.done h2::after { content: "done"; font-size: 10pt; background: var(--green); padding: 1px 6px; margin-left: 10px; vertical-align: middle; }
+
+.row { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: flex-end; margin: 8px 0; }
+label { display: flex; flex-direction: column; gap: 2px; font-size: 9.5pt; color: var(--grey); }
+input, select {
+  font: 11pt Arial, Helvetica, sans-serif; color: var(--ink);
+  padding: 3px 6px; border: 1px solid var(--line); border-radius: 0; background: #fff;
+}
+input[type=text], input[type=password] { min-width: 340px; }
+input:focus, select:focus { outline: none; border-color: var(--ink); }
+button {
+  font: 11pt Arial, Helvetica, sans-serif; color: var(--ink); cursor: pointer;
+  padding: 3px 12px; background: var(--cyan); border: 0; border-radius: 0;
+}
+button:hover { background: var(--green); }
+button:disabled { background: #eee; color: #aaa; cursor: default; }
+
+.status { font-size: 10pt; color: var(--grey); min-height: 1.5em; font-variant-numeric: tabular-nums; }
+.status.error { color: var(--red); }
+.note { font-size: 9.5pt; color: var(--grey); }
+
+.bar { height: 6px; background: #eee; margin-top: 6px; max-width: 360px; }
+.bar > div { height: 100%; width: 0; background: var(--green); }
+
+.gallery { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 8px; }
+.gallery > img { width: 88px; height: 88px; object-fit: cover; display: block; }
+.gallery figure { width: 200px; margin: 0 6px 6px 0; }
+.gallery figure img { width: 200px; height: 150px; object-fit: cover; display: block; }
+.gallery figcaption { font-size: 8.5pt; color: var(--grey); padding-top: 2px; line-height: 1.3; }
+.preview { max-width: 100%; height: auto; display: block; margin-top: 8px; }
+video.preview { width: 100%; background: #000; }
+
+table.plain { border-collapse: collapse; margin: 10px 0 18px; width: 100%; }
+table.plain th, table.plain td { border: 1px solid #000; padding: 5px 8px; text-align: left; vertical-align: top; }
+table.plain th { font-weight: bold; }
+
+@media (max-width: 860px) {
+  body { padding: 40px 24px 60px; min-height: 0; }
+  input[type=text], input[type=password] { min-width: 0; width: 100%; }
+  label { width: 100%; }
+}

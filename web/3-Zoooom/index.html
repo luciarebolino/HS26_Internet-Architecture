@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Zoooom</title>
+  <link rel="stylesheet" href="../shared/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/mp4-muxer@5.2.1/build/mp4-muxer.js"></script>
+  <script src="../shared/common.js"></script>
+</head>
+<body>
+  <p class="back"><a href="../index.html">← all exercises</a></p>
+  <h1>Zoooom <small>exercise 3</small></h1>
+  <p class="intro">
+    The Zürich West webcam on
+    <a href="https://www.myswitzerland.com/en-us/destinations/panoramas/zuerich-west/" target="_blank">myswitzerland.com</a>
+    takes a 360° photo of the city every few minutes and keeps them all. The website doesn't show where the
+    photos come from, but the browser's <b>Network</b> tab does: a camera archive at
+    <code>zuerichtourismus.roundshot.com</code>. We read that archive directly, pick a photo for every day,
+    and record a video that travels through time while zooming from <b>Frame A</b> (the city) to
+    <b>Frame B</b> (one far-away block). Do the steps in order.
+  </p>
+  <p class="ref">After <a href="https://lav.io/projects/the-zooms/" target="_blank">Sam Lavigne</a>, <i>The Zooms</i> (2023):
+    every single zooming shot extracted from 600 hours of leaked police helicopter surveillance footage.</p>
+
+  <section class="step" id="s1">
+    <h2><span class="n">1</span> Open the camera archive</h2>
+    <p>The archive's calendar is a small file listing every day that has photos.</p>
+    <div class="row"><button id="b1">Open archive</button></div>
+    <div class="status" id="st1"></div>
+  </section>
+
+  <section class="step" id="s2">
+    <h2><span class="n">2</span> Choose which photos</h2>
+    <p>One photo per chosen day, the one closest to the time you pick. Photos before mid-2022 only exist
+       as small previews, so the zoom only gets sharp from June 2022 on. Older photos also download slowly
+       (a few seconds each): start with "every month", it's about 50 photos.</p>
+    <div class="row">
+      <label>From<input id="from" type="date" value="2022-06-15"></label>
+      <label>To<input id="to" type="date"></label>
+      <label>Every<select id="every">
+        <option value="1">day</option><option value="7">week</option>
+        <option value="30" selected>month</option><option value="365">year</option>
+      </select></label>
+      <label>At about<select id="time">
+        <option>08:00</option><option>10:00</option><option>12:00</option><option selected>13:40</option>
+        <option>16:00</option><option>18:00</option><option>20:00</option>
+      </select></label>
+      <button id="b2" disabled>Find photos</button>
+    </div>
+    <div class="bar" id="p2"><div></div></div>
+    <div class="status" id="st2"></div>
+    <div class="gallery wide" id="g2"></div>
+  </section>
+
+  <section class="step" id="s3">
+    <h2><span class="n">3</span> Frame A and Frame B</h2>
+    <p>Positions in the full panorama (10240 x 2048 pixels): x and y of the top-left corner, then the width.
+       White = Frame A, red = Frame B. Change the numbers and press <b>Show frames</b> to see them.</p>
+    <div class="row">
+      <label>A: x<input id="ax" type="number" value="5472" style="width:90px"></label>
+      <label>A: y<input id="ay" type="number" value="0" style="width:80px"></label>
+      <label>A: width<input id="aw" type="number" value="3056" style="width:90px"></label>
+      <label>B: x<input id="bx" type="number" value="6818" style="width:90px"></label>
+      <label>B: y<input id="by" type="number" value="864" style="width:80px"></label>
+      <label>B: width<input id="bw" type="number" value="220" style="width:90px"></label>
+      <button id="b3" disabled>Show frames</button>
+    </div>
+    <div class="status" id="st3"></div>
+    <canvas class="preview" id="framesPreview" width="10" height="10" hidden></canvas>
+  </section>
+
+  <section class="step" id="s4">
+    <h2><span class="n">4</span> Record the video</h2>
+    <p>Each photo is shown for a few video frames while the view zooms from A to B over the whole video.
+       Choose one day only and many frames per photo to get a pure zoom on a single moment.</p>
+    <div class="row">
+      <label>Frames per photo<select id="fpp">
+        <option>1</option><option selected>3</option><option>6</option><option>12</option><option>48</option><option>120</option>
+      </select></label>
+      <label>Speed<select id="fps"><option value="12">12 fps</option><option value="24" selected>24 fps</option><option value="30">30 fps</option></select></label>
+      <label>Date on the video<select id="stamp"><option value="1" selected>yes</option><option value="0">no</option></select></label>
+      <button id="b4" disabled>Record video</button>
+    </div>
+    <div class="bar" id="p4"><div></div></div>
+    <div class="status" id="st4"></div>
+    <canvas class="preview" id="screen" width="1280" height="720" hidden></canvas>
+    <video class="preview" id="result" controls loop hidden></video>
+    <p id="again" hidden><a id="againLink" download="Zoooom.mp4" href="#">Download the video again</a></p>
+  </section>
+
+  <p class="note">Webcam images © Zürich Tourismus / Roundshot. For this class exercise only.
+     Be polite: every photo is a request to their server, so keep the number of photos reasonable.</p>
+  <script src="app.js"></script>
+</body>
+</html>

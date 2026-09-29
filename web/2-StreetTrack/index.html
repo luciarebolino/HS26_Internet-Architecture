@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>StreetTrack</title>
+  <link rel="stylesheet" href="../shared/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.22.0/dist/tf.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd@2.2.3/dist/coco-ssd.min.js"></script>
+  <script src="../shared/common.js"></script>
+</head>
+<body>
+  <p class="back"><a href="../index.html">← all exercises</a></p>
+  <h1>StreetTrack <small>exercise 2</small></h1>
+  <p class="intro">
+    Google's Street View car photographed every street around the Schlachthof. We collect those
+    photos, let a small AI model (running inside this page) look for <b>trucks</b>, and ask Street View
+    for a second photo zoomed in on every truck it finds. Do the steps in order.
+  </p>
+  <p class="ref">After <a href="https://jamesbridle.com/works/every-cctv-camera-cc" target="_blank">James Bridle</a>, <i>Every CCTV Camera (CC)</i>:
+    every CCTV camera on a walk around London's Congestion Charge Zone, from <i>The Nor</i>. Here the camera is Google's, and what we collect are the trucks.</p>
+
+  <section class="step" id="s0">
+    <h2><span class="n">0</span> Your key</h2>
+    <p>Paste the Google key your teacher gave you. This browser remembers it.</p>
+    <div class="row"><input id="key" type="password" placeholder="AIza..." autocomplete="off"></div>
+  </section>
+
+  <section class="step" id="s1">
+    <h2><span class="n">1</span> Find the Street View panoramas in the area</h2>
+    <p>We put a point every few metres over the area and ask Google where its nearest panorama is
+       (a panorama is one 360° photo). Type a place name, or copy a <b>Box</b> from
+       <a href="https://bboxfinder.com" target="_blank">bboxfinder.com</a>.</p>
+    <div class="row">
+      <label>Area<input id="area" type="text" value="8.5025,47.3828,8.5088,47.3866"></label>
+      <label>A point every<select id="spacing">
+        <option value="15">15 m</option><option value="20" selected>20 m</option><option value="30">30 m</option>
+      </select></label>
+      <button id="b1">Find panoramas</button>
+    </div>
+    <p class="note">The numbers already filled in are the streets around the Schlachthof in Zürich.</p>
+    <div class="bar" id="p1"><div></div></div>
+    <div class="status" id="st1"></div>
+  </section>
+
+  <section class="step" id="s2">
+    <h2><span class="n">2</span> Download the photos</h2>
+    <p>For every panorama we download 4 photos: looking north, east, south and west.</p>
+    <div class="row"><button id="b2" disabled>Download photos</button></div>
+    <div class="bar" id="p2"><div></div></div>
+    <div class="status" id="st2"></div>
+    <div class="gallery" id="g2"></div>
+  </section>
+
+  <section class="step" id="s3">
+    <h2><span class="n">3</span> Find the trucks and zoom in</h2>
+    <p>The model (COCO-SSD) knows 80 kinds of things, "truck" is one of them. For every truck it finds,
+       we ask Street View for a new photo pointed at the truck, with a narrow angle: a real zoom.</p>
+    <div class="row">
+      <label>How sure the model must be<select id="minScore">
+        <option value="0.4">40%</option><option value="0.5" selected>50%</option><option value="0.7">70%</option>
+      </select></label>
+      <button id="b3" disabled>Find trucks</button>
+    </div>
+    <div class="bar" id="p3"><div></div></div>
+    <div class="status" id="st3"></div>
+    <div class="gallery wide" id="g3"></div>
+  </section>
+
+  <section class="step" id="s4">
+    <h2><span class="n">4</span> Save the trucks</h2>
+    <p>One <code>.zip</code> with <code>zoom/</code> (the close-ups), <code>found/</code> (the original photo
+       with the truck marked in red) and <code>trucks.csv</code> (date, place and direction of every truck).</p>
+    <div class="row"><button id="b4" disabled>Save .zip</button></div>
+    <div class="status" id="st4"></div>
+  </section>
+
+  <p class="note">Street View imagery © Google. For this class exercise only: don't publish the photos.</p>
+  <script src="app.js"></script>
+</body>
+</html>

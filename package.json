@@ -1,0 +1,16 @@
+{
+  "name": "internet-architecture",
+  "private": true,
+  "type": "module",
+  "description": "Three scraping exercises around the Schlachthof in Zürich",
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "@tensorflow-models/coco-ssd": "^2.2.3",
+    "@tensorflow/tfjs": "^4.22.0",
+    "@tensorflow/tfjs-backend-wasm": "^4.22.0",
+    "ffmpeg-static": "^5.3.0",
+    "jimp": "^1.6.1"
+  }
+}

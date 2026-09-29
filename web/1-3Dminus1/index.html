@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>3Dminus1</title>
+  <link rel="stylesheet" href="../shared/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+  <script src="../shared/common.js"></script>
+</head>
+<body>
+  <p class="back"><a href="../index.html">← all exercises</a></p>
+  <h1>3Dminus1 <small>exercise 1</small></h1>
+  <p class="intro">
+    Google's 3D map is made of 3D shapes wrapped in flat images called <b>textures</b>.
+    We download the 3D map of an area, throw the shapes away and keep only the textures,
+    as if every building had been smashed flat. Do the steps in order: each button unlocks the next one.
+  </p>
+  <p class="ref">After <a href="https://clementvalla.com/" target="_blank">Clement Valla</a>, <i>3D-Maps-Minus-3D</i>:
+    Google Earth's 3D map shown with all the 3D removed, leaving only the flat texture images that normally wrap its buildings, roads and hills.</p>
+
+  <section class="step" id="s0">
+    <h2><span class="n">0</span> Your key</h2>
+    <p>Paste the Google key your teacher gave you. This browser remembers it.</p>
+    <div class="row"><input id="key" type="password" placeholder="AIza..." autocomplete="off"></div>
+  </section>
+
+  <section class="step" id="s1">
+    <h2><span class="n">1</span> Choose an area and find its 3D tiles</h2>
+    <p>Type a place name, <b>or</b> go to <a href="https://bboxfinder.com" target="_blank">bboxfinder.com</a>,
+       draw a rectangle and copy the numbers from the <b>Box</b> field. Keep it small (a few hundred metres).</p>
+    <div class="row">
+      <label>Area<input id="area" type="text" value="8.50332,47.38335,8.50803,47.38598"></label>
+      <button id="b1">Find tiles</button>
+    </div>
+    <p class="note">The numbers already filled in are the Schlachthof block in Zürich.</p>
+    <div class="status" id="st1"></div>
+  </section>
+
+  <section class="step" id="s2">
+    <h2><span class="n">2</span> Download the tiles, keep only the textures</h2>
+    <p>Every tile is a small 3D model plus some images. We keep the images and ignore the 3D.</p>
+    <div class="row"><button id="b2" disabled>Get textures</button></div>
+    <div class="bar" id="p2"><div></div></div>
+    <div class="status" id="st2"></div>
+    <div class="gallery" id="g2"></div>
+  </section>
+
+  <section class="step" id="s3">
+    <h2><span class="n">3</span> Smash the city flat</h2>
+    <p>Each texture is pasted on the map where its tile stands.</p>
+    <div class="row"><button id="b3" disabled>Make the map</button></div>
+    <div class="status" id="st3"></div>
+    <canvas class="preview" id="map" width="10" height="10" hidden></canvas>
+  </section>
+
+  <section class="step" id="s4">
+    <h2><span class="n">4</span> Save everything</h2>
+    <p>You get one <code>.zip</code> with <code>map.jpg</code> and a <code>squares</code> folder: every texture,
+       named after the coordinates of its block (<code>latitude_longitude.jpg</code>). Paste the two numbers
+       into Google Maps, with a comma between them, to see the spot.</p>
+    <div class="row"><button id="b4" disabled>Save .zip</button></div>
+    <div class="status" id="st4"></div>
+  </section>
+
+  <p class="note">3D tiles and textures © Google and its data providers. For this class exercise only: don't publish the textures.</p>
+  <script src="app.js"></script>
+</body>
+</html>
