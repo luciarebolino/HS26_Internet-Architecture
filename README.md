@@ -1,5 +1,9 @@
 # Internet Architecture: three scraping exercises
 
+A workshop on the spatial practice of web scraping: automatically collecting and transforming digital material found online.
+
+We will learn how to scrape large quantities of material from the internet and reassemble them into an investigative narrative and visual essay that tell the story of a site. Using a counter-forensic lens, we will critically select a dataset and reverse-engineer how its images and spatial representations were produced. We will then curate the scraped images, videos and text into a contemporary digital form on narrative "internet architecture".
+
 Three small experiments in collecting images from the internet, all around the
 **Schlachthof** (the slaughterhouse) in Zürich West.
 
@@ -48,7 +52,7 @@ If you know Git, you can `git clone` it instead.
 ## 4. Add the Google key (exercises 1 and 2)
 
 Exercises 1 and 2 use Google's map services, which need a **key** (a kind of password).
-Your teacher may give you one, or you can [make your own](#get-your-own-google-key) (about 15 minutes).
+Lucia may give you one, or you can [make your own](#get-your-own-google-key) (about 5 minutes).
 Exercise 3 needs no key.
 
 1. In VS Code's file list (left), right-click in the empty space → **New File**.
