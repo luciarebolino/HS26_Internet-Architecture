@@ -14,7 +14,7 @@ them many times since 2010. We collect those photos, let a small AI model look f
 - `trucks.csv`: a table with the date, place and direction of every truck, and a link that
   opens the spot in Google Maps (open it in Excel, Numbers or Google Sheets)
 
-**You need:** the setup from the [main README](../README.md) and the Google key in `google-key.txt`.
+**You need:** the setup from the [main README](../README.md) and a Google key in `google-key.txt` ([how to get your own](../README.md#get-your-own-google-key)).
 
 ---
 

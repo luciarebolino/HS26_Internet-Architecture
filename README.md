@@ -48,13 +48,57 @@ If you know Git, you can `git clone` it instead.
 ## 4. Add the Google key (exercises 1 and 2)
 
 Exercises 1 and 2 use Google's map services, which need a **key** (a kind of password).
-Your teacher gives it to you.
+Your teacher may give you one, or you can [make your own](#get-your-own-google-key) (about 15 minutes).
+Exercise 3 needs no key.
 
 1. In VS Code's file list (left), right-click in the empty space → **New File**.
 2. Call it exactly `google-key.txt`, in the main folder (next to this README).
 3. Paste the key in it and save (`Cmd+S` / `Ctrl+S`).
 
 This file is listed in `.gitignore`, so it never gets uploaded to GitHub. Don't share it.
+
+### Get your own Google key
+
+You need a Google account and a credit or debit card. Google asks for a card even though
+normal use of these exercises stays inside the free monthly allowance (see the costs below).
+
+1. **Open Google Cloud.** Go to https://console.cloud.google.com and sign in with your Google
+   account. The first time, accept the terms of service.
+2. **Make a project** (a folder for your keys and settings): https://console.cloud.google.com/projectcreate
+   Name it e.g. `internet-architecture` and click **Create**. Wait a few seconds, then check that
+   your new project is selected in the menu at the top left of the page.
+3. **Turn on billing:** https://console.cloud.google.com/billing
+   Click **Link a billing account** (or **Create account**) and add your card. Without this,
+   Google refuses the key.
+4. **Switch on the two services** the exercises use. Open each link and click **Enable**:
+   - **Map Tiles API** (3D tiles, exercise 1): https://console.cloud.google.com/apis/library/tile.googleapis.com
+   - **Street View Static API** (exercise 2): https://console.cloud.google.com/apis/library/street-view-image-backend.googleapis.com
+5. **Make the key:** https://console.cloud.google.com/apis/credentials
+   Click **+ Create credentials** → **API key**. Copy the key that appears (it starts with `AIza`).
+6. **Protect it (recommended).** On the same page, click the key's name. Under
+   **API restrictions** choose **Restrict key**, tick **Map Tiles API** and **Street View Static API**,
+   and click **Save**. Leave "Application restrictions" on **None**, or the scripts stop working.
+7. **Set a budget alert (recommended),** so Google emails you before anything costs money:
+   https://console.cloud.google.com/billing/budgets → **Create budget**, e.g. 5 CHF, alerts at 50% and 100%.
+8. Paste the key into `google-key.txt` (above), or into the key box of the web version.
+
+If you get `Google said 403` right after enabling the services, wait 5 minutes and try again:
+it takes Google a moment to switch them on.
+
+**What it costs.** Google gives a free allowance every month
+([prices](https://developers.google.com/maps/billing-and-pricing/pricing), checked September 2026):
+
+| Exercise | What counts | Free each month | After that |
+|---|---|---|---|
+| 1 · 3Dminus1 | one run of step 1 = 1 "Photorealistic 3D Tiles" session | 1,000 | $6 per 1,000 |
+| 2 · StreetTrack | every photo downloaded (default area: about 970 per run) | 10,000 photos | $7 per 1,000 |
+| 2 · StreetTrack, step 1 | looking up where the panoramas are | unlimited | free |
+
+So exercise 1 is practically free, and exercise 2 is free for about 10 full runs a month with the
+default area. Bigger areas or a smaller `SPACING` mean more photos.
+
+Official guides, if you get stuck: [key for the Map Tiles API](https://developers.google.com/maps/documentation/tile/get-api-key) ·
+[key for the Street View Static API](https://developers.google.com/maps/documentation/streetview/get-api-key)
 
 ## 5. Run an exercise
 
@@ -119,10 +163,10 @@ the buttons: nothing to install, and results go to your Downloads folder. (They'
 | `Cannot find module` / `Cannot find package` | run `npm install` in the main folder (part 3) |
 | `Cannot find module '.../1-find-tiles.js'` | you are in the wrong folder: `cd` into the exercise first (`cd ..` goes back up) |
 | `npm error enoent Could not read package.json` | you ran `npm install` in the wrong folder: open the main project folder in VS Code (part 3) |
-| `No Google key` | create `google-key.txt` in the main folder (part 4) |
+| `No Google key` | create `google-key.txt` in the main folder (part 4), or [make your own key](#get-your-own-google-key) |
 | `Missing output/...: run step X first` | run the steps in order |
 | `SyntaxError` pointing at `settings.js` | a quote `"` or a comma is missing in what you changed |
-| `Google said 403` | the key isn't valid, or the needed Google API isn't enabled (ask your teacher) |
+| `Google said 403` | the key isn't valid, billing isn't on, or the service isn't enabled: see [Get your own Google key](#get-your-own-google-key), steps 3 and 4 (after enabling, wait 5 minutes) |
 
 The 3D tiles and Street View photos are © Google, the webcam photos © Zürich Tourismus / Roundshot.
 They are for this class exercise only: the `output` folders are never uploaded (see `.gitignore`).

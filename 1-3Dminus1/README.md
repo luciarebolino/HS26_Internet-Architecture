@@ -14,7 +14,7 @@ flat.
 - `squares/`: every texture as a JPG, named after the coordinates of its block,
   e.g. `47.38523_8.50307.jpg` (latitude_longitude)
 
-**You need:** the setup from the [main README](../README.md) and the Google key in `google-key.txt`.
+**You need:** the setup from the [main README](../README.md) and a Google key in `google-key.txt` ([how to get your own](../README.md#get-your-own-google-key)).
 
 ---
 
